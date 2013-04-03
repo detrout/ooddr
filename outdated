@@ -2,7 +2,7 @@
 
 import argparse
 
-from oodr import pdood
+from ooddr import pdood
 
 def main(cmdline=None):
     parser = make_parser()
