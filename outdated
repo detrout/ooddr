@@ -1,0 +1,31 @@
+#!/usr/bin/python3
+
+import argparse
+
+from oodr import pdood
+
+def main(cmdline=None):
+    parser = make_parser()
+    args = parser.parse_args(cmdline)
+
+    repository = None
+    if args.packages:
+        repository = pdood.build_repository_table(args.packages)
+
+    files = pdood.find_debian_files(args.root[0])
+    source, needs, provides = pdood.build_package_tables(files)
+
+    if repository is not None:
+        outdated = pdood.find_outdated(source, repository)
+        columns = ['Source','Version_src','Version_repo']
+        print(outdated[columns].drop_duplicates())
+
+        
+def make_parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('root', nargs=1)
+    parser.add_argument('-p', '--packages', help='Packages file')
+    return parser
+    
+if __name__ == "__main__":
+    main()
