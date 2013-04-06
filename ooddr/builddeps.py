@@ -8,7 +8,7 @@ from pprint import pprint
 import networkx as nx
 
 from debian.deb822 import Deb822, _PkgRelationMixin, Dsc, Packages
-from debian.changelog import Changelog
+from .changelog import OrderedChangelog
 from apt.cache import Cache
 
 class Control(Deb822, _PkgRelationMixin):
@@ -93,8 +93,7 @@ def read_debian_dir(package_dir):
 def read_changelog(stream):
     """Find current version
     """
-    log = Changelog(stream)
-    return log.get_version()
+    return OrderedChangelog(stream)
 
 def scan_project_tree(root):
     """Look through a project tree for debian control files
